@@ -1,2 +1,2 @@
-# Webp2Jpg
-Converting files *.webp to *.jpg
+# AW2RGB
+Converting files *.webp and *.avif to *.jpg and *.png
