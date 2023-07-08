@@ -86,10 +86,10 @@ class ExampleApp(QtWidgets.QMainWindow, AW2RGB_ui.Ui_MainWindow):
                     #конвертирование файла
                     im = Image.open(file).convert("RGB")
                     #сохранение файла в папку
-                    im.save(dird0+file.split(".")[0] + "." + format0, format1)
-                    os.replace(dird0+file.split(".")[0] + ".webp", dird1 + file.split(".")[0] + ".webp")
+                    im.save(dird0 + ".".join(file.split(".")[:-1]) + "." + format0, format1)
+                    os.replace(dird0 + ".".join(file.split(".")[:-1]) + ".webp", dird1 + ".".join(file.split(".")[:-1]) + ".webp")
                     #запись сконвертированных файлов в лог файл
-                    log.writelines(file.split(".")[0] + ".webp\n")
+                    log.writelines(".".join(file.split(".")[:-1]) + ".webp\n")
                     n=n+1
                 #вывод счетчика
                 log.writelines("Total "+str(n) + " files *.webp converted to *." + format0)
@@ -114,10 +114,10 @@ class ExampleApp(QtWidgets.QMainWindow, AW2RGB_ui.Ui_MainWindow):
                         #конвертирование файла
                         im = Image.open(file).convert("RGB")
                         #сохранение файла в папку
-                        im.save(dird0+file.split(".")[0] + "." + format0, format1)
-                        os.replace(dird0+file.split(".")[0] + ".avif", dird1+file.split(".")[0] + ".avif")
+                        im.save(dird0 + ".".join(file.split(".")[:-1]) + "." + format0, format1)
+                        os.replace(dird0 + ".".join(file.split(".")[:-1]) + ".avif", dird1 + ".".join(file.split(".")[:-1]) + ".avif")
                         #запись сконвертированных файлов в лог файл
-                        log.writelines(file.split(".")[0] + ".avif\n")
+                        log.writelines(".".join(file.split(".")[:-1]) + ".avif\n")
                         m = m + 1
                     #вывод счетчика
                     log.writelines("Total "+str(m) + " files *.avif converted to *."+format0)
@@ -165,11 +165,11 @@ class ExampleApp(QtWidgets.QMainWindow, AW2RGB_ui.Ui_MainWindow):
                     #конвертирование файла
                     im = Image.open(file).convert("RGB")
                     #сохранение файла в папку
-                    im.save(dird0+file.split(".")[0] + "." + "jpg", "jpeg")
-                    im.save(dird0+file.split(".")[0] + "." + "png", "png")
-                    os.replace(dird0+file.split(".")[0] + ".webp", dird1+file.split(".")[0] + ".webp")
+                    im.save(dird0 + ".".join(file.split(".")[:-1]) + "." + "jpg", "jpeg")
+                    im.save(dird0 + ".".join(file.split(".")[:-1]) + "." + "png", "png")
+                    os.replace(dird0 + ".".join(file.split(".")[:-1]) + ".webp", dird1 + ".".join(file.split(".")[:-1]) + ".webp")
                     #запись сконвертированных файлов в лог файл
-                    log.writelines(file.split(".")[0] + "*.webp\n")
+                    log.writelines(".".join(file.split(".")[:-1]) + "*.webp\n")
                     n = n + 1
                 #вывод счетчика
                 log.writelines("Total "+str(n) + " files *.webp and *.avif converted to *.jpg and *.png")
