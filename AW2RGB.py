@@ -5,27 +5,22 @@ import PIL
 from PIL import Image
 import pillow_avif
 import glob
-
 from PySide6 import QtCore, QtGui, QtWidgets
 from PySide6.QtWidgets import QMessageBox
 from PySide6.QtGui import QIcon
-
+import shutil
 import AW2RGB_ui
 from AW2RGB_ui import Ui_MainWindow
-
 class ExampleApp(QtWidgets.QMainWindow, AW2RGB_ui.Ui_MainWindow):
-    
     dir0 = ""
     dir1 = ""
     f_list = ""
-
     def __init__(self):
         super(ExampleApp,self).__init__()
         self.setFixedSize(600, 310)   #fis size window
         self.ui=Ui_MainWindow()
         self.ui.setupUi(self)
         self.init_UI()
-
     def init_UI(self):
         self.ui.dirButton.clicked.connect(self.browse_folder)  # Выполнить функцию browse_folder при нажатии кнопки
         self.ui.pushButton_JPG.clicked.connect(lambda: self.convert("jpg","jpeg"))  # Выполненить функцию конвертации в *jpg при нажатии кнопки
@@ -33,7 +28,6 @@ class ExampleApp(QtWidgets.QMainWindow, AW2RGB_ui.Ui_MainWindow):
         self.ui.pushButton_JPGPNG.clicked.connect(self.convertall)  # Выполнить функцию конвертации в *jpg and *png при нажатии кнопки     
         self.ui.dirButton_2.clicked.connect(self.file_select)  # Выполнить функцию browse_folder при нажатии кнопки
         self.ui.pushButton_DELETE.clicked.connect(self.file_delete)  # Выполнить функцию конвертации в *png при нажатии кнопки
-
     def browse_folder(self):
         self.ui.listView_1.clear()
         self.ui.listView_2.clear()
@@ -61,7 +55,6 @@ class ExampleApp(QtWidgets.QMainWindow, AW2RGB_ui.Ui_MainWindow):
                 error.setDefaultButton(QMessageBox.Ok)
                 error.setText("Папка не выбрана")
                 error.exec() 
-
     def convert(self,format0,format1):
         if ExampleApp.dir1 != "":
             #список файлов webp и avif
@@ -95,6 +88,7 @@ class ExampleApp(QtWidgets.QMainWindow, AW2RGB_ui.Ui_MainWindow):
                 log.writelines("Total "+str(n) + " files *.webp converted to *." + format0)
                 self.ui.listView_2.addItem("Total " + str(n) + " files *.webp converted to *." + format0)   # добавить в listWidget
                 log.close()
+                shutil.move(dird0 + "log.txt", dird1 + "log.txt")
             else:
                 #проверка наличия *avif по списку
                 if not avifFiles == []:
@@ -123,6 +117,7 @@ class ExampleApp(QtWidgets.QMainWindow, AW2RGB_ui.Ui_MainWindow):
                     log.writelines("Total "+str(m) + " files *.avif converted to *."+format0)
                     self.ui.listView_2.addItem("Total " + str(m) + " files *.avif converted to *." + format0)   # добавить в listWidget
                     log.close()
+                    shutil.move(dird0 + "log.txt", dird1 + "log.txt")
                 else:
                     #сообщение об ошибке  функции convert - не найдены файлы *webp/*avif
                     error = QMessageBox()
@@ -139,7 +134,6 @@ class ExampleApp(QtWidgets.QMainWindow, AW2RGB_ui.Ui_MainWindow):
             error.setDefaultButton(QMessageBox.Ok)
             error.setText("Папка не выбрана")
             error.exec()
-
     def convertall(self):
         if ExampleApp.dir1 != "":
             #список файлов webp и avif
@@ -175,6 +169,7 @@ class ExampleApp(QtWidgets.QMainWindow, AW2RGB_ui.Ui_MainWindow):
                 log.writelines("Total "+str(n) + " files *.webp and *.avif converted to *.jpg and *.png")
                 self.ui.listView_2.addItem("Total " + str(n) + " files *.webp and *.avif converted to *.jpg and *.png")   # добавить в listWidget
                 log.close()
+                shutil.move(dird0 + "log.txt", dird1 + "log.txt")
             else:
                     #сообщение об ошибке  функции convert - не найдены файлы *webp/*avif
                     error = QMessageBox()
@@ -191,7 +186,6 @@ class ExampleApp(QtWidgets.QMainWindow, AW2RGB_ui.Ui_MainWindow):
             error.setDefaultButton(QMessageBox.Ok)
             error.setText("Папка не выбрана")
             error.exec()
-
     def file_select(self):
         self.ui.listView_3.clear()
         f_list_l = QtWidgets.QFileDialog.getOpenFileNames(None, 'Select file', '', ("*.webp *.avif"))[0]
@@ -211,7 +205,6 @@ class ExampleApp(QtWidgets.QMainWindow, AW2RGB_ui.Ui_MainWindow):
             error.exec()
             ExampleApp.f_list = []
             self.ui.listView_3.clear()
-    
     def file_delete(self):
         #проверка наличия webp в списке
         f_list_l3 = ExampleApp.f_list
@@ -231,11 +224,9 @@ class ExampleApp(QtWidgets.QMainWindow, AW2RGB_ui.Ui_MainWindow):
             error.setDefaultButton(QMessageBox.Ok)
             error.setText("Список файлов для удаления пустой")
             error.exec()
-
 def main(): 
     app = QtWidgets.QApplication(sys.argv)
     mainwindow = ExampleApp()
     mainwindow.show()
     sys.exit(app.exec())
-
 main()
